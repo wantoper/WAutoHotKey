@@ -225,7 +225,7 @@ GetSelectedIndex() {
     global lvMain
     if (lvMain = "")
         return 0
-    return lvMain.GetNext(0, "S")
+    return lvMain.GetNext(0, 2)  ; 2 = LVNI_SELECTED
 }
 
 AddNew() {
@@ -389,7 +389,7 @@ GetDetectorHwnd() {
     global lvDetector
     if (lvDetector = "")
         return ""
-    sel := lvDetector.GetNext(0, "S")
+    sel := lvDetector.GetNext(0, 2)  ; 2 = LVNI_SELECTED
     if (sel = 0)
         return ""
     return lvDetector.GetText(sel, 1)
