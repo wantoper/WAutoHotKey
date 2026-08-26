@@ -48,7 +48,11 @@ LoadConfig() {
                 rules.Push({hotkey: hotkey, name: name, match: match, exclude: exclude, enabled: enabled})
         }
     } catch as e {
-        MsgBox("配置文件读取失败: " e.Message, "WAutoHotKey 错误", "T10")
+        ; 读取失败（通常是编码问题），备份旧文件并重建默认配置
+        backupPath := configPath ".bak." A_Now
+        try FileMove(configPath, backupPath, 1)
+        CreateDefaultConfig()
+        MsgBox("配置文件损坏，已备份为 " backupPath " 并恢复默认配置。", "WAutoHotKey", "T10")
     }
 }
 

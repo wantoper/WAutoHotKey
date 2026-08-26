@@ -1,0 +1,10 @@
+; 配置文件（首次运行自动生成）
+config.ini
+config.ini.bak.*
+
+; 编译产物
+*.exe
+*.bak
+
+; AHK 临时文件
+*.ahk.bak
