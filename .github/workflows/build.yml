@@ -1,0 +1,47 @@
+name: Build EXE
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+  release:
+    types: [ created ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 安装 AutoHotkey v2
+        run: |
+          $url = "https://www.autohotkey.com/download/2.0/AutoHotkey_2.0.18_setup.exe"
+          $installer = "$env:TEMP\ahk_setup.exe"
+          Invoke-WebRequest -Uri $url -OutFile $installer -UseBasicParsing
+          Start-Process -FilePath $installer -ArgumentList "/s" -Wait
+          Write-Host "AutoHotkey v2 安装完成"
+
+      - name: 编译为 EXE
+        run: |
+          $ahk2exe = Get-ChildItem -Path "C:\Program Files\AutoHotkey" -Recurse -Filter "Ahk2Exe.exe" | Select-Object -First 1 -ExpandProperty FullName
+          Write-Host "编译器路径: $ahk2exe"
+          & $ahk2exe /in WAutoHotKey.ahk /out WAutoHotKey.exe
+          if (Test-Path WAutoHotKey.exe) {
+              $size = (Get-Item WAutoHotKey.exe).Length / 1MB
+              Write-Host "编译成功，大小: $([math]::Round($size, 2)) MB"
+          } else {
+              Write-Error "编译失败，未生成 exe"
+              exit 1
+          }
+
+      - name: 上传 Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WAutoHotKey-exe
+          path: WAutoHotKey.exe
+
+      - name: 上传到 Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: WAutoHotKey.exe
