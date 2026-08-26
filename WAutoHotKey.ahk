@@ -48,7 +48,7 @@ LoadConfig() {
                 rules.Push({hotkey: hotkey, name: name, match: match, exclude: exclude, enabled: enabled})
         }
     } catch as e {
-        MsgBox("配置文件读取失败: " e.Message, "WAutoHotKey 错误", "IconError T10")
+        MsgBox("配置文件读取失败: " e.Message, "WAutoHotKey 错误", "T10")
     }
 }
 
@@ -107,12 +107,13 @@ RegisterHotkeys() {
             Hotkey(rule.hotkey, callback, "On")
             registered[rule.hotkey] := callback
         } catch as e {
-            MsgBox("热键注册失败: " rule.hotkey "`n" e.Message, "WAutoHotKey 警告", "IconWarning T10")
+            MsgBox("热键注册失败: " rule.hotkey "`n" e.Message, "WAutoHotKey 警告", "T10")
         }
     }
 }
 
 ReloadAll() {
+    global rules
     LoadConfig()
     RegisterHotkeys()
     RefreshListView()
@@ -254,7 +255,7 @@ DeleteSelected() {
         MsgBox("请先选择一条规则", "提示", "T3")
         return
     }
-    if (MsgBox("确定删除规则: " rules[idx].name " ?", "确认删除", "YesNo IconQuestion") = "Yes") {
+    if (MsgBox("确定删除规则: " rules[idx].name " ?", "确认删除", "YesNo") = "Yes") {
         rules.RemoveAt(idx)
         RefreshListView()
     }
