@@ -19,7 +19,7 @@ lvDetector := ""
 LoadConfig()
 RegisterHotkeys()
 SetupTray()
-TrayTip("WAutoHotKey", "已加载 " rules.Length " 条热键规则", , 1500)
+TrayTip("已加载 " rules.Length " 条热键规则", "WAutoHotKey", 1500)
 
 ; ================================================================
 ;  配置管理
@@ -116,7 +116,7 @@ ReloadAll() {
     LoadConfig()
     RegisterHotkeys()
     RefreshListView()
-    TrayTip("WAutoHotKey", "配置已重新加载，共 " rules.Length " 条规则", , 1500)
+    TrayTip("配置已重新加载，共 " rules.Length " 条规则", "WAutoHotKey", 1500)
 }
 
 ; ================================================================
@@ -278,7 +278,7 @@ MoveSelected(direction) {
 SaveAndApply() {
     SaveConfig()
     RegisterHotkeys()
-    TrayTip("WAutoHotKey", "配置已保存，热键已更新", , 1500)
+    TrayTip("配置已保存，热键已更新", "WAutoHotKey", 1500)
 }
 
 ; ================================================================
@@ -399,7 +399,7 @@ CopySelectedMatch() {
     process := WinGetProcessName("ahk_id " hwnd)
     match := "ahk_exe " process
     A_Clipboard := match
-    TrayTip("窗口探测器", "已复制: " match, , 1500)
+    TrayTip("已复制: " match, "窗口探测器", 1500)
 }
 
 CopySelectedTitle() {
@@ -410,5 +410,5 @@ CopySelectedTitle() {
     }
     title := WinGetTitle("ahk_id " hwnd)
     A_Clipboard := title
-    TrayTip("窗口探测器", "已复制标题: " title, , 1500)
+    TrayTip("已复制标题: " title, "窗口探测器", 1500)
 }
